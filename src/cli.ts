@@ -19,3 +19,5 @@ for (const workflowFile of workflowFiles) {
     workflowContent
   );
 }
+
+console.log("Done! Don't forget to commit the changes");

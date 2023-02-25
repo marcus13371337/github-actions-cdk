@@ -1,7 +1,7 @@
-import { job } from '../components/job.js';
-import { step } from '../components/step.js';
-import { triggers } from '../components/triggers.js';
-import { createWorkflow } from '../index.js';
+import { job } from '../../components/job.js';
+import { step } from '../../components/step.js';
+import { triggers } from '../../components/triggers.js';
+import { createWorkflow } from '../../index.js';
 
 export default createWorkflow({
   name: 'tests',

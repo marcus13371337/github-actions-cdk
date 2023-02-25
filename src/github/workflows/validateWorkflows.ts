@@ -36,7 +36,7 @@ export default createWorkflow({
         }),
         step({
           name: 'Validate pipelines',
-          run: `git diff --exit-code`,
+          run: `test -z "$(git status --porcelain)"`,
         }),
       ],
     }),

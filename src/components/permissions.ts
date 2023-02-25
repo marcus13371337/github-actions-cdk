@@ -1,41 +1,30 @@
-import { z } from 'zod';
+import { BaseComponent, createBaseComponent } from './baseComponent.js';
 
-const PermissionNameSchema = z.enum(['read', 'write', 'none']);
-const GlobalPermissionNameSchema = z.enum(['read-all', 'write-all']);
+type PermissionName = 'read' | 'write' | 'none';
 
-const PermissionValueSchema = z
-  .union([PermissionNameSchema, PermissionNameSchema.array()])
-  .optional();
+type PermissionValue = PermissionName | PermissionName[];
 
-const WorkflowPermissionsSchema = z.object({
-  actions: PermissionValueSchema,
-  checks: PermissionValueSchema,
-  contents: PermissionValueSchema,
-  deployments: PermissionValueSchema,
-  idToken: PermissionValueSchema,
-  issues: PermissionValueSchema,
-  discussions: PermissionValueSchema,
-  packages: PermissionValueSchema,
-  pages: PermissionValueSchema,
-  pullRequests: PermissionValueSchema,
-  repositoryProjects: PermissionValueSchema,
-  securityEvents: PermissionValueSchema,
-  statuses: PermissionValueSchema,
-});
-
-export const PermissionOptionsSchema = z.union([
-  WorkflowPermissionsSchema,
-  GlobalPermissionNameSchema,
-  GlobalPermissionNameSchema.array(),
-]);
-
-export const permissions = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  permissions: z.infer<typeof PermissionOptionsSchema>
-) => {
-  return {
-    type: 'workflowPermissions',
-  };
+type DetailedPermissions = {
+  actions?: PermissionValue;
+  checks?: PermissionValue;
+  contents?: PermissionValue;
+  deployments?: PermissionValue;
+  idToken?: PermissionValue;
+  issues?: PermissionValue;
+  discussions?: PermissionValue;
+  packages?: PermissionValue;
+  pages?: PermissionValue;
+  pullRequests?: PermissionValue;
+  repositoryProjects?: PermissionValue;
+  securityEvents?: PermissionValue;
+  statuses?: PermissionValue;
 };
 
-export type Permissions = ReturnType<typeof permissions>;
+type GlobalPermission = 'read-all' | 'write-all';
+
+type PermissionOptions = DetailedPermissions | GlobalPermission;
+
+export const permissions = (permissions: PermissionOptions) =>
+  createBaseComponent('permissions', () => permissions);
+
+export type Permissions = BaseComponent<'permissions'>;

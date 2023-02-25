@@ -1,13 +1,12 @@
-import { IsSameType } from '../utils/isSameType.js';
+import { IsSameType } from '../utils/types/isSameType.js';
+import { BaseComponent, createBaseComponent } from './baseComponent.js';
 
 export type BaseEnv = {
-  [key: string]: string;
+  [key: string]: string | number | boolean;
 };
 
-export type Env<T> = {
-  type: 'env';
-  variables: T;
-};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type Env<T> = BaseComponent<'env'>;
 
 export type EnvGetter<EnvVariables extends BaseEnv> = IsSameType<
   EnvVariables,
@@ -17,8 +16,5 @@ export type EnvGetter<EnvVariables extends BaseEnv> = IsSameType<
   : <T extends keyof EnvVariables>(name: T) => string;
 
 export const env = <T>(variables: T): Env<T> => {
-  return {
-    type: 'env',
-    variables,
-  };
+  return createBaseComponent('env', () => variables);
 };
